@@ -3,21 +3,30 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // اتأكد إن رول admin موجود
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // أنشئ اليوزر
+        $user = User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'password'=> bcrypt('password'),
+            ]
+        );
+
+        // اربطه بالرول
+        $user->assignRole('admin');
+
+        // باقي السييدرز
+        $this->call(BrandSeeder::class);
+        $this->call(RoleSeeder::class);
     }
 }

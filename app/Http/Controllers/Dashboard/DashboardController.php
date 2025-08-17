@@ -44,7 +44,8 @@ class DashboardController extends Controller
 
                     $request->session()->regenerate();
 
-                    return redirect()->intended('dashboard');
+                    // return redirect()->intended('dashboard');
+                    return redirect()->route('dashboard');
 
                 } else {
 
